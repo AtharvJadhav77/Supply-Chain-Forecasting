@@ -29,13 +29,13 @@ ENV/
 .env*.local
 
 # Large data files (optional - comment out if you want to include)
-# data/raw/*.csv
-# data/processed/*.csv
+data/raw/*.csv
+data/processed/*.csv
 
 # Model files (optional - comment out if needed)
-# models/*.keras
-# models/*.pkl
-# models/*.h5
+models/*.keras
+models/*.pkl
+models/*.h5
 
 # Jupyter
 .ipynb_checkpoints/
