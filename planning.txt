@@ -1,0 +1,462 @@
+Perfect. Now I’ll give you a **clear, end-to-end execution plan** that you can *actually follow*, not just a conceptual roadmap.
+
+Think of this like a **project playbook** used in real ML teams.
+I’ll break it into **phases → steps → concrete actions → deliverables**.
+
+You can literally tick boxes as you go.
+
+---
+
+# 🧠 PROJECT EXECUTION PLAN
+
+**AI-Powered Multi-Modal Agricultural Price Forecasting System**
+
+---
+
+# 🟢 PHASE 0 — Project Setup (Day 0–1)
+
+### Step 0.1: Fix the scope (VERY IMPORTANT)
+
+You will build:
+
+* 3–5 commodities (Tomato, Onion, Potato, Wheat, Rice)
+* 3–5 districts
+* Daily / weekly forecasting
+* 14–30 day horizon
+
+📌 **Do NOT try to scale to all India initially.**
+
+---
+
+### Step 0.2: Folder Structure (Create this first)
+
+```
+agri-price-forecasting/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── external/
+│
+├── notebooks/
+│   ├── 01_eda.ipynb
+│   ├── 02_feature_engineering.ipynb
+│   ├── 03_lstm_model.ipynb
+│   ├── 04_xgboost_fusion.ipynb
+│   ├── 05_nlp_pipeline.ipynb
+│
+├── src/
+│   ├── data_loader.py
+│   ├── features.py
+│   ├── models/
+│   │   ├── lstm.py
+│   │   ├── xgboost.py
+│   │   └── ensemble.py
+│   ├── inference.py
+│   ├── retrain.py
+│   └── alerts.py
+│
+├── dashboard/
+│   └── app.py
+│
+├── models/
+├── reports/
+├── requirements.txt
+└── README.md
+```
+
+📌 This alone already signals **professional engineering**.
+
+---
+
+# 🟢 PHASE 1 — Data Ingestion & Cleaning (Week 1)
+
+---
+
+## Step 1.1: Price Data
+
+**Input**
+
+* APMC / Agmarknet data
+* Columns:
+
+```text
+date, commodity, district, min_price, max_price, modal_price
+```
+
+**Actions**
+
+* Remove missing rows
+* Convert date → datetime
+* Sort by date
+
+**Deliverable**
+✔ Clean price dataset
+
+---
+
+## Step 1.2: Weather Data (Already familiar to you)
+
+For each district:
+
+* Temperature
+* Rainfall
+* Humidity (optional)
+
+Merge by date.
+
+**Deliverable**
+✔ Price + Weather merged dataset
+
+---
+
+## Step 1.3: Save processed data
+
+```python
+df.to_csv("data/processed/base_dataset.csv")
+```
+
+📌 From now on, **never touch raw data again**.
+
+---
+
+# 🟢 PHASE 2 — Feature Engineering (Week 2)
+
+---
+
+## Step 2.1: Time-Series Features
+
+For each commodity–district pair:
+
+```text
+lag_1, lag_7, lag_14
+rolling_mean_7, rolling_mean_30
+rolling_std_7, rolling_std_30
+price_change_rate
+```
+
+---
+
+## Step 2.2: Calendar Features
+
+Add:
+
+```text
+day_of_week
+month
+is_weekend
+is_monsoon
+```
+
+Simple rule:
+
+```python
+is_monsoon = month in [6,7,8,9]
+```
+
+---
+
+## Step 2.3: Encode Commodity & District
+
+```python
+commodity_id = LabelEncoder()
+district_id = LabelEncoder()
+```
+
+📌 These will later act like **embeddings**.
+
+---
+
+## Step 2.4: Train / Validation Split (IMPORTANT)
+
+Use **time-based split**, never random:
+
+```text
+Train: 2018–2022
+Val:   2023
+Test:  2024
+```
+
+**Deliverable**
+✔ Feature-engineered dataset ready for modeling
+
+---
+
+# 🟢 PHASE 3 — Baseline & LSTM Model (Week 3)
+
+---
+
+## Step 3.1: Build a Baseline Model (MANDATORY)
+
+Use:
+
+* Moving Average
+* Or ARIMA
+
+📌 You *need* this for comparison.
+
+---
+
+## Step 3.2: LSTM Model
+
+**Input**
+
+* Sequence length = 30 days
+* Features: price + weather + encoded IDs
+
+**Model**
+
+```text
+Input → LSTM → Dense → Output (price)
+```
+
+**Train**
+
+* Loss: MSE
+* Metric: RMSE, MAPE
+
+**Deliverable**
+✔ LSTM outperforming baseline
+
+---
+
+## Step 3.3: Multi-step Forecasting
+
+Use **recursive forecasting**:
+
+```text
+t+1 → t+2 → ... → t+14
+```
+
+Save predictions.
+
+---
+
+# 🟢 PHASE 4 — Hybrid Fusion Model (Week 4)
+
+---
+
+## Step 4.1: Generate LSTM Predictions
+
+Add column:
+
+```text
+lstm_pred
+```
+
+---
+
+## Step 4.2: Train XGBoost (Fusion Layer)
+
+**Features**
+
+```text
+lstm_pred
+weather
+calendar
+rolling stats
+commodity_id
+district_id
+```
+
+**Target**
+
+```text
+actual modal_price
+```
+
+📌 This model *corrects* LSTM mistakes.
+
+---
+
+## Step 4.3: Explainability (SHAP)
+
+* Compute SHAP values
+* Plot:
+
+  * Top features
+  * Waterfall plot per prediction
+
+**Deliverable**
+✔ Explainable hybrid model
+
+---
+
+# 🟢 PHASE 5 — NLP & External Risk Pipeline (Week 5)
+
+---
+
+## Step 5.1: News Collection
+
+Use:
+
+* GNews / NewsAPI
+* Keywords per commodity
+
+Store:
+
+```text
+date, title, description
+```
+
+---
+
+## Step 5.2: Sentiment Analysis
+
+Use pretrained transformer.
+
+Output:
+
+```text
+sentiment_score ∈ [-1,1]
+```
+
+---
+
+## Step 5.3: Risk Index
+
+Simple but effective:
+
+```python
+risk_score = negative_article_count_7d * avg_negative_sentiment
+```
+
+Add:
+
+```text
+risk_score_7d
+```
+
+Merge into dataset.
+
+---
+
+## Step 5.4: Retrain Fusion Model
+
+Add risk score as feature.
+
+📌 This completes the **multi-modal learning** part.
+
+---
+
+# 🟢 PHASE 6 — Prescriptive Intelligence (Week 6)
+
+---
+
+## Step 6.1: Uncertainty Estimation
+
+* Rolling RMSE
+* Prediction intervals
+
+---
+
+## Step 6.2: Safety Stock Formula
+
+```text
+Safety Stock = Z × σ × sqrt(lead_time)
+```
+
+Lead time ↑ if risk_score ↑
+
+---
+
+## Step 6.3: Alert Rules
+
+```text
+IF risk_score > threshold AND forecast ↑
+→ Supply disruption alert
+```
+
+---
+
+# 🟢 PHASE 7 — Dashboard & Deployment (Week 7)
+
+---
+
+## Step 7.1: Streamlit App
+
+Features:
+
+* Select commodity + district
+* View forecast
+* Risk indicator
+* SHAP explanation
+* Alert banner
+
+---
+
+## Step 7.2: Model Saving & Versioning
+
+Save:
+
+```text
+model_v1_lstm.h5
+model_v1_xgb.pkl
+```
+
+---
+
+## Step 7.3: Retraining Script
+
+```text
+New data → retrain → evaluate → save
+```
+
+---
+
+# 🟢 PHASE 8 — Documentation & Resume (Final Week)
+
+---
+
+## Step 8.1: README.md
+
+Include:
+
+* Problem statement
+* Architecture diagram
+* Dataset description
+* Models used
+* Results
+* Screenshots
+
+---
+
+## Step 8.2: Resume Mapping
+
+Tie each phase to a bullet point (I’ll help you here).
+
+---
+
+# ⏱️ TOTAL TIMELINE
+
+| Phase            | Time   |
+| ---------------- | ------ |
+| Setup + Data     | 1 week |
+| Features         | 1 week |
+| LSTM             | 1 week |
+| Fusion + SHAP    | 1 week |
+| NLP              | 1 week |
+| Prescriptive     | 1 week |
+| Dashboard + Docs | 1 week |
+
+👉 **7–8 weeks total**, realistic.
+
+---
+
+# 🔥 VERY IMPORTANT RULES
+
+✅ Do **not** over-optimize
+✅ Focus on **clean pipeline + story**
+✅ Every feature must justify business value
+❌ No random models
+❌ No vague claims
+
+---
+
+## Next step (I suggest this)
+
+👉 I can give you a **Day-1 to Day-7 checklist** with exact code tasks
+👉 Or we can start with **Phase 1 code structure**
+👉 Or I can help you create the **README first (reverse engineering)**
+
+Tell me what you want to do next and we’ll execute it step-by-step 🚀

@@ -1,0 +1,20 @@
+{
+    "model_name": "lstm_residual_model",
+    "version": "v1",
+    "trained_on": "2026-01-22 11:23:47.742317",
+    "sequence_length": 30,
+    "input_features": [
+        "modal_price",
+        "residual"
+    ],
+    "target": "residual",
+    "architecture": [
+        "LSTM(64, return_sequences=True)",
+        "Dropout(0.2)",
+        "LSTM(32)",
+        "Dense(1)"
+    ],
+    "loss": "Huber",
+    "optimizer": "Adam",
+    "residual_mae": 166.61831636139337
+}

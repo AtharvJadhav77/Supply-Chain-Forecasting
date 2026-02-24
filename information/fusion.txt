@@ -1,0 +1,7 @@
+Historical Prices ──┐
+Weather / Lags ─────┼─▶ XGBoost ──▶ Base Forecast
+District / Commodity┘
+
+Price Sequences ─────────▶ LSTM ──▶ Residual Signal
+
+Final Forecast = XGB + LSTM

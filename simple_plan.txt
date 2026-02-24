@@ -1,0 +1,274 @@
+🟢 PHASE 0 — Project Setup & Scope Definition
+
+Goal: Decide what we are building and why
+
+✔️ Defined problem: price forecasting under volatility
+✔️ Locked scope: multi-commodity, multi-district
+✔️ Decided modeling philosophy:
+
+Event-based time series
+
+Hybrid ML + DL
+
+Late fusion
+
+Explainable AI
+
+✅ STATUS: COMPLETED
+
+🟢 PHASE 1 — Data Ingestion & Cleaning
+
+Goal: Build a single source of truth dataset
+
+✔️ Ingested APMC/Agmarknet price data
+✔️ Merged weather data (Open-Meteo)
+✔️ Fixed district/commodity naming issues
+✔️ Aggregated to one row per (date, district, commodity)
+✔️ Removed duplicates
+✔️ Verified schema and ranges
+
+📦 Output:
+
+base_dataset.csv
+
+
+✅ STATUS: COMPLETED
+
+🟢 PHASE 2 — Feature Engineering (Temporal Intelligence)
+
+Goal: Teach the model how time works
+
+✔️ Time features (day, week, month, weekend)
+✔️ Strict sorting by district-commodity-date
+✔️ Lag features (1, 7, 14 observations)
+✔️ Rolling statistics (mean, volatility)
+✔️ Correct NaN handling (drop lags, impute weather)
+✔️ Verified no leakage, no duplicates
+
+📦 Output:
+
+phase2_feature_complete.csv
+
+
+✅ STATUS: COMPLETED
+
+🚨 This is the hardest phase of time-series ML
+You executed it correctly.
+
+🟡 PHASE 3 — Classical ML Baseline (XGBoost)
+
+Goal: Establish a strong, explainable baseline
+
+What we are doing here:
+
+Time-aware train/test split
+
+Tabular regression
+
+Feature importance validation
+
+SHAP explanations
+
+Why this phase matters:
+
+Validates feature quality
+
+Gives interpretability
+
+Acts as fusion backbone
+
+📌 You have:
+✔️ Correct train/test split
+✔️ Non-empty training data
+✔️ Clean feature matrix
+
+🔄 STATUS: IN PROGRESS (YOU ARE HERE)
+
+🔵 PHASE 4 — Deep Learning (LSTM / Transformer)
+
+Goal: Capture long-range temporal dependencies
+
+What we will do:
+
+Sequence construction
+
+LSTM training
+
+Multi-step forecasting
+
+Error analysis
+
+Important:
+
+❌ LSTM will not replace XGBoost
+✅ It will act as a temporal expert
+
+⏳ STATUS: DONE
+
+🟣 PHASE 5 — Hybrid Fusion (Late Fusion)
+
+Goal: Combine strengths of ML + DL
+
+Strategy:
+
+LSTM predicts base signal
+
+XGBoost corrects using exogenous features
+
+Optional weighted ensemble
+
+This is where your project becomes research-grade.
+
+⏳ STATUS: DONE
+
+🔴 PHASE 6 — NLP & Exogenous Event Intelligence
+
+Goal: Make the model aware of the real world
+
+Components:
+
+News ingestion
+
+Sentiment analysis (Transformer)
+
+Risk / shock index
+
+Regime awareness
+
+This feeds into:
+
+Forecast adjustment
+
+Alerts
+
+Prescriptive decisions
+
+⏳ STATUS: NOT STARTED
+
+🟠 PHASE 7 — Explainability & Prescriptive Layer
+
+Goal: Move from prediction → decision
+
+Outputs:
+
+SHAP explanations
+
+Forecast uncertainty
+
+Safety stock recommendations
+
+Early warning alerts
+
+This aligns directly with your research paper thesis.
+
+⏳ STATUS: NOT STARTED
+
+🟤 PHASE 8 — Deployment, Dashboard & Documentation
+
+Goal: Make it real, usable, and resume-ready
+
+Deliverables:
+
+Streamlit dashboard
+
+Model versioning
+
+Retraining pipeline
+
+GitHub README
+
+Research paper figures
+
+⏳ STATUS: NOT STARTED
+
+📍 YOUR CURRENT POSITION (VERY CLEAR)
+[█████████████████████░░░░░░░░░░░░░░░░░░░░]
+        ↑ YOU ARE HERE
+
+
+You have successfully completed ~35–40% of the entire system, and you have finished the most error-prone part.
+
+Everything from here onward:
+
+Is more modular
+
+Has faster feedback
+
+Is more rewarding visually
+
+🧭 What we do NEXT (Immediate Roadmap)
+🔹 Next 2 sessions:
+
+1️⃣ Train XGBoost baseline
+2️⃣ Generate SHAP plots
+
+🔹 Following:
+
+3️⃣ Prepare LSTM sequences
+4️⃣ Train LSTM
+5️⃣ Compare vs XGBoost
+
+Only after this:
+6️⃣ NLP pipeline
+7️⃣ Risk scoring
+8️⃣ Prescriptive logic
+
+🏗️ CORRECT ROLE OF NEWS IN YOUR SYSTEM
+❌ What news should NOT do
+
+Not replace XGBoost
+
+Not replace LSTM
+
+Not be a huge feature matrix
+
+Not be trained end-to-end with prices
+
+✅ What news SHOULD do
+
+Explain why residuals spike
+
+Detect abnormal regimes
+
+Adjust confidence, safety stock, alerts
+
+Support human-readable reasoning
+
+┌───────────────┐
+│  Price Model  │  (XGB + LSTM)
+└───────┬───────┘
+        │
+        ▼
+┌────────────────────┐
+│  Prediction Output │
+└───────┬────────────┘
+        │
+        ▼
+┌───────────────────────────┐
+│  News Intelligence Layer  │
+│  (Reasoning & Adjustment) │
+└───────────────────────────┘
+
+
+┌──────────────────────────────┐
+│  Fusion Price Model          │
+│  (XGB + LSTM Residual)       │
+└──────────────┬───────────────┘
+               │
+               ▼
+     Base Price Forecast
+               │
+               ▼
+┌──────────────────────────────┐
+│  News Intelligence Engine    │
+│  - Fetch latest articles     │
+│  - Sentiment analysis        │
+│  - Shock scoring             │
+└──────────────┬───────────────┘
+               │
+               ▼
+     Risk & Adjustment Layer
+               │
+               ▼
+    Final Forecast + Advice
+

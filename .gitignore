@@ -1,0 +1,51 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+*.pyo
+*.pyc
+build/
+dist/
+wheels/
+*.egg-info
+*.egg
+
+# Virtual environments
+.venv
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Large data files (optional - comment out if you want to include)
+# data/raw/*.csv
+# data/processed/*.csv
+
+# Model files (optional - comment out if needed)
+# models/*.keras
+# models/*.pkl
+# models/*.h5
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Cache
+*.cache
+.pytest_cache/
+.coverage
+
+# OS files
+Thumbs.db
+.DS_Store

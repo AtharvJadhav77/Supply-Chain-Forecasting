@@ -1,0 +1,65 @@
+# Core Data Science & ML Libraries
+pandas==2.3.3
+numpy==1.26.4
+scikit-learn==1.7.2
+scipy==1.15.3
+
+# Tree-based Models
+xgboost==3.1.3
+lightgbm==4.6.0
+
+# Deep Learning Frameworks
+tensorflow==2.20.0
+keras==3.12.0
+torch==2.10.0
+torchaudio==2.10.0
+torchvision==0.25.0
+transformers==5.0.0
+accelerate==1.12.0
+
+# Explainability & Model Interpretability
+shap==0.45.1
+
+# Visualization
+matplotlib==3.10.8
+pillow==12.1.0
+contourpy==1.3.2
+
+# Web Framework & API
+fastapi==0.128.8
+uvicorn==0.40.0
+starlette==0.52.1
+pydantic==2.12.5
+
+# NLP & LLM
+huggingface_hub==1.3.4
+tokenizers==0.22.2
+groq==1.0.0
+
+# Data Processing
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.3
+
+# HTTP & Networking
+requests==2.32.5
+httpx==0.28.1
+
+# Utilities
+click==8.3.1
+typer-slim==0.21.1
+PyYAML==6.0.3
+tqdm==4.67.1
+rich==14.2.0
+
+# Jupyter Support
+jupyter_core==5.9.1
+jupyter_client==8.8.0
+ipython==8.38.0
+ipykernel==7.1.0
+matplotlib-inline==0.2.1
+
+# Development & Testing
+setuptools==63.2.0
+wheel==0.45.1
+pip==25.3
