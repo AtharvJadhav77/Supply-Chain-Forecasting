@@ -28,14 +28,34 @@ ENV/
 .env.local
 .env*.local
 
-# Large data files (optional - comment out if you want to include)
-data/raw/*.csv
-data/processed/*.csv
+# Large data files and generated artifacts
+# Ignore raw and processed datasets to avoid pushing bulky files to GitHub
+data/raw/
+data/processed/
 
-# Model files (optional - comment out if needed)
-models/*.keras
-models/*.pkl
-models/*.h5
+# Ignore trained model artifacts and serialized objects
+models/
+*.pkl
+*.joblib
+*.keras
+*.h5
+*.pb
+*.onnx
+*.pt
+*.pth
+*.bin
+
+# Ignore large binary or archive files
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Ignore common experiment outputs
+outputs/
+results/
+logs/
 
 # Jupyter
 .ipynb_checkpoints/
