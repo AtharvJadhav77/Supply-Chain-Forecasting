@@ -52,6 +52,10 @@ models/
 *.rar
 *.7z
 
+# Ignore notebooks and other bulky analysis files
+*.ipynb
+notebooks/
+
 # Ignore common experiment outputs
 outputs/
 results/
@@ -69,3 +73,8 @@ logs/
 # OS files
 Thumbs.db
 .DS_Store
+
+# Local server logs
+server.log
+server.err.log
+server.pid

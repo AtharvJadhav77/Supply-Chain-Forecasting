@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriCast — AI Agri Price Intelligence</title>
+  <meta name="description" content="Hybrid XGBoost + LSTM agri price forecasting fused with live news sentiment and prescriptive supply-chain recommendations." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070b14'/%3E%3Cpath d='M18 44c14 0 26-10 28-26-13-2-25 5-28 18' stroke='%2334d399' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 46l10-10' stroke='%23a3e635' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body id="top">
+  <div class="background" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="AgriCast home">
+      <span class="brand-mark">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M7 25c8.5 0 16-6.5 18-18-8.5-1.5-16 3.5-18 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M7 27l7-7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>AgriCast</strong>
+        <small>Supply Chain Intelligence</small>
+      </span>
+    </a>
+
+    <nav class="header-nav" aria-label="Primary">
+      <a href="#workspace">Forecast</a>
+      <a href="#signals">Signals</a>
+      <a href="#models">Models</a>
+      <a href="/docs" target="_blank" rel="noreferrer">API Docs</a>
+    </nav>
+
+    <div class="header-status" id="apiStatus">
+      <span class="status-dot"></span>
+      <span class="status-text">Connecting…</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>AI-powered agri market intelligence</span>
+        <h1>Know the price<br /><span class="gradient-text">before the market moves.</span></h1>
+        <p class="hero-lead">
+          A hybrid forecasting engine that fuses XGBoost + LSTM price models with live news
+          sentiment and prescriptive inventory logic — built for volatile agri supply chains.
+        </p>
+        <div class="hero-badges">
+          <span class="badge">XGBoost + LSTM fusion</span>
+          <span class="badge">Live news NLP</span>
+          <span class="badge">90-day horizon</span>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong id="statRows">—</strong>
+            <span>historical records</span>
+          </div>
+          <div class="hero-stat">
+            <strong id="statDistricts">—</strong>
+            <span>districts</span>
+          </div>
+          <div class="hero-stat">
+            <strong id="statCommodities">—</strong>
+            <span>commodities</span>
+          </div>
+          <div class="hero-stat">
+            <strong id="statPairs">—</strong>
+            <span>market pairs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="stack-card">
+          <div class="stack-head">
+            <span class="chip chip-live"><span class="pulse-dot"></span>Live model stack</span>
+            <span class="mono">v2.0</span>
+          </div>
+          <div class="stack-list">
+            <div class="stack-item">
+              <span class="stack-icon icon-emerald">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V9m5 10V5m5 14v-7m5 7V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              <div><strong>XGBoost price engine</strong><small>Weather · lags · market features</small></div>
+              <span class="stack-status">online</span>
+            </div>
+            <div class="stack-item">
+              <span class="stack-icon icon-lime">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 16l4-5 4 2 4-6 4 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong>LSTM residual layer</strong><small>Temporal correction signal</small></div>
+              <span class="stack-status">online</span>
+            </div>
+            <div class="stack-item">
+              <span class="stack-icon icon-amber">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2"/><path d="M7 9h6M7 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              <div><strong>News intelligence</strong><small>Transformer sentiment + risk</small></div>
+              <span class="stack-status">online</span>
+            </div>
+            <div class="stack-item">
+              <span class="stack-icon icon-sky">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V7l8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong>Prescriptive layer</strong><small>Confidence + safety stock</small></div>
+              <span class="stack-status">online</span>
+            </div>
+          </div>
+          <div class="sparkline">
+            <svg viewBox="0 0 320 60" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#34d399" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 46 L30 40 L60 44 L90 30 L120 34 L150 22 L180 28 L210 18 L240 24 L270 12 L300 16 L320 8 L320 60 L0 60 Z" fill="url(#sparkFill)"/>
+              <path d="M0 46 L30 40 L60 44 L90 30 L120 34 L150 22 L180 28 L210 18 L240 24 L270 12 L300 16 L320 8" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Forecast studio</span>
+          <h2>Price intelligence, on demand</h2>
+        </div>
+        <p>Select a district and commodity, choose a horizon, and let the fusion engine project the price path.</p>
+      </div>
+
+      <div class="workspace-grid">
+        <aside class="panel control-panel">
+          <div class="panel-title">
+            <span>Market setup</span>
+            <span class="mono" id="datasetRange">—</span>
+          </div>
+
+          <label class="field">
+            <span>District</span>
+            <select id="districtSelect"></select>
+          </label>
+
+          <label class="field">
+            <span>Commodity</span>
+            <select id="commoditySelect"></select>
+          </label>
+
+          <label class="field">
+            <span>Forecast date</span>
+            <input type="date" id="dateInput" />
+          </label>
+
+          <div class="horizon-box">
+            <div class="horizon-row">
+              <span>Forecast horizon</span>
+              <strong id="horizonValue">7 days</strong>
+            </div>
+            <div class="horizon-track"><span id="horizonBar"></span></div>
+          </div>
+
+          <div class="preset-row" role="group" aria-label="Quick horizons">
+            <button type="button" data-days="7">7D</button>
+            <button type="button" data-days="15">15D</button>
+            <button type="button" data-days="30">30D</button>
+            <button type="button" data-days="60">60D</button>
+          </div>
+
+          <button type="button" class="btn-primary" id="forecastBtn">
+            <span class="btn-label">Run forecast</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <p class="hint" id="controlHint">Loads the latest available market data and runs the full intelligence pipeline.</p>
+        </aside>
+
+        <div class="results" id="resultsRoot">
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <div class="kpi-head"><span>Forecast price</span><span class="kpi-icon">₹</span></div>
+              <strong class="kpi-value" id="kpiPrice">—</strong>
+              <div class="kpi-foot">
+                <span class="muted">per quintal</span>
+                <span class="chip" id="kpiTrend">—</span>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-head"><span>Confidence</span><span class="kpi-icon">◎</span></div>
+              <strong class="kpi-value" id="kpiConfidence">—</strong>
+              <div class="meter"><span id="confidenceBar"></span></div>
+              <span class="muted" id="confidenceHint">—</span>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-head"><span>Risk index</span><span class="kpi-icon">⚠</span></div>
+              <strong class="kpi-value" id="kpiRisk">—</strong>
+              <div class="meter meter-risk"><span id="riskBar"></span></div>
+              <span class="muted" id="riskHint">News-driven volatility</span>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-head"><span>Safety stock</span><span class="kpi-icon">◫</span></div>
+              <strong class="kpi-value" id="kpiStock">—</strong>
+              <div class="kpi-foot">
+                <span class="muted">recommended units</span>
+                <span class="chip chip-soft" id="leadTimeChip">5d lead</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <h3>Price trajectory</h3>
+                <p id="chartSubtitle">Historical modal price and projected path</p>
+              </div>
+              <div class="chart-legend">
+                <span><i class="dot dot-history"></i>Historical</span>
+                <span><i class="dot dot-forecast"></i>Forecast</span>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="priceChart" role="img" aria-label="Historical and forecast price chart"></canvas>
+            </div>
+            <div class="chart-foot">
+              <div><span class="muted">Range</span><strong id="rangeValue">—</strong></div>
+              <div><span class="muted">Latest actual</span><strong id="latestValue">—</strong></div>
+              <div><span class="muted">Expected move</span><strong id="moveValue">—</strong></div>
+            </div>
+          </div>
+
+          <div class="lower-grid">
+            <div class="panel advisory-panel" id="signals">
+              <div class="panel-head">
+                <div>
+                  <h3>AI market brief</h3>
+                  <p>Narrative generated from price, risk, and news signals</p>
+                </div>
+                <span class="chip" id="trendChip">—</span>
+              </div>
+              <div class="advisory-callout">
+                <span class="callout-icon">↗</span>
+                <p id="advisoryText">Run a forecast to generate a market advisory.</p>
+              </div>
+              <p class="brief" id="explanationText">The model explanation will appear here.</p>
+            </div>
+
+            <div class="panel news-panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Market signals</h3>
+                  <p>Live headlines scored by transformer sentiment</p>
+                </div>
+                <span class="mono" id="newsMeta">—</span>
+              </div>
+              <ul class="news-list" id="newsList">
+                <li class="empty-state">News signals will appear after a forecast.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="models-section" id="models">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">System architecture</span>
+          <h2>Four layers. One decision.</h2>
+        </div>
+        <p>Each layer adds a different kind of intelligence — from market features to human-readable reasoning.</p>
+      </div>
+
+      <div class="pipeline">
+        <article class="pipeline-card">
+          <span class="pipeline-index">01</span>
+          <span class="stack-icon icon-emerald">
+            <svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7" ry="3" stroke="currentColor" stroke-width="2"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" stroke="currentColor" stroke-width="2"/></svg>
+          </span>
+          <h3>Data fusion</h3>
+          <p>APMC price history joined with weather, calendar, lag, and rolling-volatility features.</p>
+          <div class="tag-row"><span>Prices</span><span>Weather</span><span>Lags</span></div>
+        </article>
+
+        <article class="pipeline-card">
+          <span class="pipeline-index">02</span>
+          <span class="stack-icon icon-lime">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 17l4-6 4 3 4-7 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="7" r="2" stroke="currentColor" stroke-width="2"/></svg>
+          </span>
+          <h3>Fusion forecast</h3>
+          <p>XGBoost predicts the base price while an LSTM residual layer corrects temporal drift recursively.</p>
+          <div class="tag-row"><span>XGBoost</span><span>LSTM</span><span>Recursive</span></div>
+        </article>
+
+        <article class="pipeline-card">
+          <span class="pipeline-index">03</span>
+          <span class="stack-icon icon-amber">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2"/><path d="M7 9h6M7 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <h3>News intelligence</h3>
+          <p>Google News headlines are scored with DistilBERT sentiment and folded into a risk index.</p>
+          <div class="tag-row"><span>NLP</span><span>Sentiment</span><span>Risk</span></div>
+        </article>
+
+        <article class="pipeline-card">
+          <span class="pipeline-index">04</span>
+          <span class="stack-icon icon-sky">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V7l8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Prescriptive layer</h3>
+          <p>Confidence decay, uncertainty bands, and a safety-stock formula turn predictions into decisions.</p>
+          <div class="tag-row"><span>Confidence</span><span>Safety stock</span><span>Advisory</span></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <span class="brand-mark small">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 25c8.5 0 16-6.5 18-18-8.5-1.5-16 3.5-18 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M7 27l7-7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </span>
+      <div><strong>AgriCast</strong><p>Decision support for agri supply chains under volatility.</p></div>
+    </div>
+    <div class="footer-meta">
+      <span>FastAPI · XGBoost · LSTM · Transformers</span>
+      <a href="/docs" target="_blank" rel="noreferrer">OpenAPI docs</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/static/vendor/chart.umd.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
